@@ -100,16 +100,24 @@ export default function SeatMap({ seatLayout, bookedSeats, selectedSeats, onTogg
       )}
 
       {/* Bus body */}
-      <Paper variant="outlined" sx={{ p: 2, borderRadius: '10px', maxWidth: 360 }}>
+      <Paper
+        variant="outlined"
+        sx={{ p: { xs: 1.5, sm: 2 }, borderRadius: '10px', maxWidth: 360, overflowX: 'auto' }}
+      >
         <Stack direction="row" sx={{ justifyContent: 'flex-end', mb: 1.5, color: 'text.disabled' }}>
           <DriveEtaRoundedIcon fontSize="small" />
         </Stack>
         <Box sx={{ borderTop: '1px dashed', borderColor: 'divider', pt: 2 }}>
           {active.rows.map((row, ri) => (
-            <Stack key={ri} direction="row" spacing={1} sx={{ justifyContent: 'center', mb: 1 }}>
+            <Stack
+              key={ri}
+              direction="row"
+              spacing={{ xs: 0.5, sm: 1 }}
+              sx={{ justifyContent: 'center', mb: 1 }}
+            >
               {row.map((cell, ci) =>
                 cell === null ? (
-                  <Box key={`gap-${ci}`} sx={{ width: isSleeper ? 18 : 22 }} />
+                  <Box key={`gap-${ci}`} sx={{ width: isSleeper ? { xs: 10, sm: 18 } : { xs: 14, sm: 22 } }} />
                 ) : (
                   <Seat
                     key={cell}
