@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>BusGo — Project Documentation</title>
+    <style>
+      @page { size: A4; margin: 0; }
+      * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        color: #15151e;
+        font-size: 10.5pt;
+        line-height: 1.5;
+      }
+      .page {
+        position: relative;
+        width: 210mm;
+        min-height: 297mm;
+        padding: 15mm 15mm 14mm;
+        page-break-after: always;
+        display: flex;
+        flex-direction: column;
+      }
+      .page:last-child { page-break-after: auto; }
+
+      /* Brand / headings */
+      .eyebrow { color: #5b3df5; font-weight: 700; letter-spacing: 0.14em; font-size: 8.5pt; text-transform: uppercase; }
+      h1 { font-size: 27pt; line-height: 1.1; margin: 4px 0 6px; letter-spacing: -0.02em; }
+      h2 { font-size: 19pt; margin: 2px 0 10px; letter-spacing: -0.01em; }
+      h3 { font-size: 12pt; margin: 16px 0 6px; color: #4429d6; }
+      p { margin: 0 0 9px; }
+      .muted { color: #6b7280; }
+      .accent { color: #5b3df5; }
+      strong { color: #15151e; }
+      ul { margin: 0 0 10px; padding-left: 18px; }
+      li { margin: 0 0 5px; }
+
+      .topbar { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; }
+      .logo { width: 30px; height: 30px; border-radius: 7px; background: linear-gradient(135deg, #5b3df5, #7c66ff); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; }
+      .brand { font-weight: 800; font-size: 14pt; letter-spacing: -0.02em; }
+
+      .footer { margin-top: auto; padding-top: 10px; border-top: 1px solid #e6e6f0; display: flex; justify-content: space-between; color: #9aa0ad; font-size: 8.5pt; }
+
+      .hero {
+        background: linear-gradient(135deg, #4429d6, #5b3df5 55%, #7c66ff);
+        color: #fff; border-radius: 14px; padding: 26px 28px; margin: 8px 0 16px;
+      }
+      .hero h1 { color: #fff; margin-top: 0; }
+      .hero p { color: rgba(255,255,255,0.92); margin-bottom: 0; font-size: 11pt; }
+
+      .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+      .card { border: 1px solid #e6e6f0; border-radius: 12px; padding: 13px 15px; background: #fff; }
+      .card.tint { background: #f5f4ff; border-color: #e2defb; }
+      .card h4 { margin: 0 0 5px; font-size: 11pt; color: #15151e; }
+      .card p { margin: 0; font-size: 9.5pt; }
+      .pill { display: inline-block; background: rgba(91,61,245,0.10); color: #4429d6; font-weight: 600; font-size: 8.5pt; padding: 3px 9px; border-radius: 999px; margin: 0 4px 4px 0; }
+
+      table { width: 100%; border-collapse: collapse; margin: 4px 0 12px; font-size: 9pt; }
+      th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid #ececf3; vertical-align: top; }
+      th { background: #f5f4ff; color: #4429d6; font-weight: 700; border-bottom: 1px solid #e2defb; }
+      code { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; font-size: 8.5pt; background: #f1f0fb; padding: 1px 5px; border-radius: 4px; color: #4429d6; }
+      .method { font-weight: 700; font-family: ui-monospace, Menlo, monospace; font-size: 8.5pt; }
+      .get { color: #0a7d4d; }
+      .post { color: #b3531d; }
+
+      /* architecture diagram */
+      .diagram { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 6px 0 6px; }
+      .node { border: 1.5px solid #cdc6f7; background: #fff; border-radius: 12px; padding: 11px 16px; text-align: center; width: 92%; }
+      .node .t { font-weight: 700; font-size: 10.5pt; }
+      .node .s { color: #6b7280; font-size: 8.5pt; }
+      .node.violet { background: linear-gradient(135deg,#5b3df5,#7c66ff); color: #fff; border: none; }
+      .node.violet .s { color: rgba(255,255,255,0.85); }
+      .node.tint { background: #f5f4ff; }
+      .arrow { color: #5b3df5; font-weight: 700; font-size: 14pt; line-height: 1.1; padding: 3px 0; }
+      .arrow .lbl { display:block; font-size: 8pt; color:#6b7280; font-weight:600; }
+      .split { display: flex; gap: 12px; width: 92%; }
+      .split .node { width: 50%; }
+
+      .def { margin: 0 0 9px; }
+      .def .term { font-weight: 700; color: #4429d6; }
+    </style>
+  </head>
+  <body>
+
+    <!-- PAGE 1 — OVERVIEW -->
+    <section class="page">
+      <div class="topbar"><div class="logo">🚌</div><div class="brand">BusGo</div><div class="muted" style="margin-left:auto;font-size:9pt">Project Documentation</div></div>
+      <div class="eyebrow">Page 1 · Overview</div>
+      <div class="hero">
+        <h1>BusGo — Bus Booking Demo</h1>
+        <p>A clean, full-stack bus-ticket booking web application built to demonstrate how a modern web app works end to end — search, seat selection, payment and ticketing — without the complexity of a production system.</p>
+      </div>
+
+      <h3>What it is</h3>
+      <p>BusGo lets a user search bus routes between cities, pick a date, choose seats on a live seat map, enter passenger details, "pay" with a mock card, and receive a confirmed ticket with a PNR. Past bookings are saved and can be viewed later.</p>
+
+      <h3>Purpose &amp; scope</h3>
+      <p>This is a <strong>demonstration / learning project</strong>. The goal is code that is easy to read and explain, while the interface still looks production-grade. It deliberately avoids a real database, real user accounts, and a real payment gateway.</p>
+
+      <div class="grid2" style="margin-top:6px">
+        <div class="card tint">
+          <h4>The whole idea in one breath</h4>
+          <p>API routes are the <em>backend</em>. <code>fetch</code> talks to the backend. <code>useState</code> remembers things on a page. One <em>Booking Context</em> holds the booking-in-progress. <em>Material UI</em> draws the interface.</p>
+        </div>
+        <div class="card">
+          <h4>At a glance</h4>
+          <p>
+            <span class="pill">Next.js (full-stack)</span>
+            <span class="pill">JavaScript</span>
+            <span class="pill">React</span>
+            <span class="pill">Material UI</span>
+            <span class="pill">React Context</span>
+            <span class="pill">JSON-file storage</span>
+          </p>
+        </div>
+      </div>
+
+      <h3>Key characteristics</h3>
+      <ul>
+        <li><strong>One codebase, one app.</strong> The frontend and the backend live together in a single Next.js project.</li>
+        <li><strong>Plain JavaScript</strong> (no TypeScript) to keep the code approachable.</li>
+        <li><strong>Server-side persistence</strong> using a simple JSON file — bookings and taken seats survive page reloads and even server restarts.</li>
+        <li><strong>Responsive &amp; sharp UI</strong> that works on phones and desktops.</li>
+      </ul>
+
+      <div class="footer"><span>BusGo · Bus Booking Demo</span><span>Page 1 of 6</span></div>
+    </section>
+
+    <!-- PAGE 2 — FEATURES -->
+    <section class="page">
+      <div class="eyebrow">Page 2 · Features</div>
+      <h2>What the app can do</h2>
+      <p class="muted" style="margin-top:-4px">The user journey runs across five screens, each adding one step of the booking.</p>
+
+      <div class="grid2">
+        <div class="card"><h4>1 · Search</h4><p>Pick a <strong>From</strong> city, a <strong>To</strong> city and a <strong>date of journey</strong>. Cities are suggested as you type, and there is a one-tap swap button.</p></div>
+        <div class="card"><h4>2 · Results</h4><p>See all buses for the route with operator, timings, duration, price, rating and seats left. <strong>Filter</strong> by type (AC / Sleeper / Seater), departure window and price, and <strong>sort</strong> by price, time, duration or rating.</p></div>
+        <div class="card"><h4>3 · Seat selection</h4><p>An interactive <strong>seat map</strong> with hover/selection animation. Booked seats are greyed out; sleeper buses show separate <strong>lower &amp; upper decks</strong>.</p></div>
+        <div class="card"><h4>4 · Passenger details</h4><p>Enter a name, age and gender per seat, plus contact details and <strong>boarding / dropping points</strong>.</p></div>
+        <div class="card"><h4>5 · Payment (mock)</h4><p>A realistic <strong>card-flip animation</strong>. A "Fill test card" shortcut speeds up demos. No real money moves.</p></div>
+        <div class="card"><h4>6 · Confirmation</h4><p>A printable ticket with a unique <strong>PNR</strong>, fired off with a <strong>confetti</strong> celebration. The ticket is saved automatically.</p></div>
+      </div>
+
+      <h3>Always-available features</h3>
+      <div class="grid2">
+        <div class="card tint"><h4>My Bookings</h4><p>Every confirmed ticket is listed and can be re-opened or printed. This proves the data really persists on the server.</p></div>
+        <div class="card tint"><h4>Reset demo</h4><p>A single button wipes all bookings and freed seats back to the starting state — perfect before a fresh demo.</p></div>
+      </div>
+
+      <h3>Quality touches</h3>
+      <ul>
+        <li><strong>Simulated network latency</strong> shows polished loading skeletons, so it feels like a real online service.</li>
+        <li><strong>Live seat availability</strong> — once a seat is booked it cannot be booked again (the server rejects double-booking).</li>
+        <li><strong>Responsive design</strong> — the navigation collapses to icons on phones and every screen reflows cleanly.</li>
+        <li><strong>Accessible seat buttons</strong>, snackbars for feedback, and helpful empty states.</li>
+      </ul>
+
+      <div class="footer"><span>BusGo · Bus Booking Demo</span><span>Page 2 of 6</span></div>
+    </section>
+
+    <!-- PAGE 3 — BACKEND -->
+    <section class="page">
+      <div class="eyebrow">Page 3 · Backend</div>
+      <h2>Backend — language &amp; building blocks</h2>
+
+      <h3>Language &amp; runtime</h3>
+      <p>The backend is written in <strong>JavaScript</strong> and runs on <strong>Node.js</strong> (the JavaScript runtime that executes code on the server instead of in the browser).</p>
+
+      <h3>Framework — Next.js Route Handlers</h3>
+      <p>There is no separate server project. The backend is a set of <strong>API Route Handlers</strong> inside the same Next.js app — each file under <code>app/api/…/route.js</code> exports <code>GET</code> / <code>POST</code> functions that receive a request and return a JSON response.</p>
+
+      <h3>Data storage — no database</h3>
+      <p>To stay simple, BusGo uses two data sources instead of a database:</p>
+      <ul>
+        <li><strong>Seed data in code</strong> (<code>lib/seed/</code>) — the list of cities and a handful of reusable bus "templates". The same templates are applied to any route the user searches, so every search returns results.</li>
+        <li><strong>A JSON file</strong> (<code>.data/bookings.json</code>) — written with Node's built-in <code>fs</code> module. It stores confirmed bookings and which seats are taken, so data survives reloads and restarts.</li>
+      </ul>
+
+      <h3>What the backend does</h3>
+      <table>
+        <tr><th>Capability</th><th>How it works</th></tr>
+        <tr><td>Search buses</td><td>Builds the bus list for a route and reports how many seats are still free.</td></tr>
+        <tr><td>Seat availability</td><td>Taken seats = seats marked booked in the seed data <em>plus</em> seats from real bookings, keyed by bus + date.</td></tr>
+        <tr><td>Create booking</td><td>Validates the chosen seats are still free, then saves the booking and assigns a random <strong>PNR</strong>. Rejects double-booking with an error.</td></tr>
+        <tr><td>List / fetch bookings</td><td>Returns all saved bookings, or a single booking by id (used by the ticket page).</td></tr>
+        <tr><td>Reset</td><td>Clears the JSON file back to the empty seed state.</td></tr>
+      </table>
+
+      <h3>Deliberately left out</h3>
+      <p><span class="pill">No SQL database</span><span class="pill">No login / auth</span><span class="pill">No real payment gateway</span> — these would be the next steps to make it production-grade, but are unnecessary for a demo.</p>
+
+      <div class="footer"><span>BusGo · Bus Booking Demo</span><span>Page 3 of 6</span></div>
+    </section>
+
+    <!-- PAGE 4 — FRONTEND -->
+    <section class="page">
+      <div class="eyebrow">Page 4 · Frontend</div>
+      <h2>Frontend — libraries we use</h2>
+
+      <p>The interface is built with <strong>React</strong> (rendered by Next.js) and styled with <strong>Material UI</strong>. Shared state is handled by React's built-in <strong>Context</strong> — intentionally <em>not</em> Redux, to keep things simple to explain.</p>
+
+      <table>
+        <tr><th>Library</th><th>What it is for</th></tr>
+        <tr><td><code>next</code></td><td>The framework: file-based routing, the dev server, the production build, and the API routes.</td></tr>
+        <tr><td><code>react</code> / <code>react-dom</code></td><td>The core UI library — builds the screen out of reusable components.</td></tr>
+        <tr><td><code>@mui/material</code></td><td>Material UI — ready-made, polished components (buttons, inputs, cards, stepper, slider…).</td></tr>
+        <tr><td><code>@mui/icons-material</code></td><td>The icon set (bus, seat, search, ticket, etc.).</td></tr>
+        <tr><td><code>@emotion/react</code>, <code>@emotion/styled</code></td><td>The styling engine Material UI uses under the hood.</td></tr>
+        <tr><td><code>@mui/material-nextjs</code></td><td>Glue that makes Material UI styling work correctly with the Next.js App Router.</td></tr>
+        <tr><td><code>@mui/x-date-pickers</code></td><td>The calendar / date-picker used for the journey date.</td></tr>
+        <tr><td><code>dayjs</code></td><td>A tiny date library used to format and calculate times.</td></tr>
+        <tr><td><code>canvas-confetti</code></td><td>The confetti burst on the confirmation page.</td></tr>
+        <tr><td><code>next/font</code> (Inter)</td><td>Loads the "Inter" font cleanly and quickly.</td></tr>
+      </table>
+
+      <h3>How state is organised</h3>
+      <div class="grid2">
+        <div class="card"><h4>Local state — <code>useState</code></h4><p>Each screen remembers its own temporary values (form fields, the active step, loading flags).</p></div>
+        <div class="card tint"><h4>Shared state — <code>BookingContext</code></h4><p>One small Context holds the "booking in progress" (search, selected bus, seats, passengers) so it can be shared as the user moves between pages.</p></div>
+      </div>
+
+      <h3>Routing &amp; data</h3>
+      <ul>
+        <li><strong>Routing:</strong> Next.js maps folders to URLs (<code>app/results/page.js</code> → <code>/results</code>). Navigation uses <code>next/navigation</code>.</li>
+        <li><strong>Data:</strong> pages call the backend with the browser's built-in <code>fetch</code> and receive JSON.</li>
+      </ul>
+
+      <div class="footer"><span>BusGo · Bus Booking Demo</span><span>Page 4 of 6</span></div>
+    </section>
+
+    <!-- PAGE 5 — ARCHITECTURE + API -->
+    <section class="page">
+      <div class="eyebrow">Page 5 · Architecture &amp; API</div>
+      <h2>How the frontend talks to the backend</h2>
+
+      <div class="diagram">
+        <div class="node violet"><div class="t">Browser — React UI</div><div class="s">pages &amp; components (Search, Results, Seat map, Payment, Ticket)</div></div>
+        <div class="arrow">↕ <span class="lbl"><code>fetch()</code> — HTTP request / JSON response</span></div>
+        <div class="node"><div class="t">Next.js API Route Handlers</div><div class="s"><code>app/api/**/route.js</code> — runs on Node.js</div></div>
+        <div class="arrow">↕ <span class="lbl">function calls</span></div>
+        <div class="node tint"><div class="t">Data layer — <code>lib/db.js</code></div><div class="s">search, availability, create / read bookings, reset</div></div>
+        <div class="arrow">↕ <span class="lbl">read / write</span></div>
+        <div class="split">
+          <div class="node"><div class="t">Seed data</div><div class="s">cities &amp; bus templates (in code)</div></div>
+          <div class="node"><div class="t">.data/bookings.json</div><div class="s">saved bookings + taken seats</div></div>
+        </div>
+      </div>
+
+      <h3>API endpoints</h3>
+      <table>
+        <tr><th style="width:46px">Method</th><th>Path</th><th>What it does</th></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/cities</code></td><td>List of cities for the search boxes.</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/buses?from&amp;to&amp;date</code></td><td>All buses for a route, each with seats-available.</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/buses/[busId]?date</code></td><td>One bus in detail: seat layout + which seats are booked.</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/bookings</code></td><td>Create a booking. Body: <code>busId, date, seats, passengers, contact</code>. Returns the booking with a <strong>PNR</strong>; rejects if seats were taken.</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/bookings</code></td><td>All saved bookings (the "My Bookings" list).</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/api/bookings/[id]</code></td><td>A single booking — used by the confirmation / ticket page.</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/api/reset</code></td><td>Clear all bookings back to the seed state (demo helper).</td></tr>
+      </table>
+
+      <h3>A typical request</h3>
+      <p class="muted" style="font-size:9pt"><code>GET /api/buses?from=Bengaluru&amp;to=Goa&amp;date=2026-07-02</code> → returns a JSON array of buses. The Results page renders one card per item. Selecting a seat and paying sends <code>POST /api/bookings</code>, and the server replies with a confirmed ticket object.</p>
+
+      <div class="footer"><span>BusGo · Bus Booking Demo</span><span>Page 5 of 6</span></div>
+    </section>
+
+    <!-- PAGE 6 — DEFINITIONS -->
+    <section class="page">
+      <div class="eyebrow">Page 6 · Definitions</div>
+      <h2>Glossary — the key terms</h2>
+
+      <div class="grid2">
+        <div>
+          <p class="def"><span class="term">API</span> — Application Programming Interface. A defined set of URLs the frontend can call to ask the backend to do something or return data.</p>
+          <p class="def"><span class="term">HTTP request / response</span> — the message a browser sends to a server (e.g. "GET this data") and the reply it gets back.</p>
+          <p class="def"><span class="term">Node.js</span> — a runtime that lets JavaScript run on a server (outside the browser). Our backend runs on it.</p>
+          <p class="def"><span class="term">Next.js</span> — a React framework that provides routing, the build system, and a place to write backend API code — all in one project.</p>
+          <p class="def"><span class="term">App Router</span> — Next.js's system where the folder structure under <code>app/</code> defines the pages and URLs.</p>
+          <p class="def"><span class="term">API Route Handler</span> — a backend function (<code>route.js</code>) that answers an API request and returns JSON.</p>
+          <p class="def"><span class="term">React</span> — a library for building user interfaces out of reusable "components".</p>
+          <p class="def"><span class="term">Component</span> — a self-contained piece of UI (e.g. a BusCard or SeatMap) that can be reused.</p>
+        </div>
+        <div>
+          <p class="def"><span class="term">JSX</span> — the HTML-like syntax used inside React components to describe what to show.</p>
+          <p class="def"><span class="term">State / <code>useState</code></span> — values a component remembers and re-renders when they change (e.g. selected seats).</p>
+          <p class="def"><span class="term">React Context</span> — a way to share one piece of state across many components without passing it down manually. BusGo uses it for the booking-in-progress.</p>
+          <p class="def"><span class="term">Props</span> — the inputs you pass into a component to configure it.</p>
+          <p class="def"><span class="term">Material UI (MUI)</span> — a library of pre-built, good-looking React components and an icon set.</p>
+          <p class="def"><span class="term"><code>fetch</code></span> — the browser's built-in function for calling an API over HTTP.</p>
+          <p class="def"><span class="term">JSON</span> — JavaScript Object Notation; the simple text format used to send data between frontend and backend.</p>
+          <p class="def"><span class="term">PNR</span> — Passenger Name Record; the short booking reference code printed on the ticket.</p>
+          <p class="def"><span class="term">localStorage vs server</span> — localStorage saves data inside one browser. BusGo instead saves on the <em>server</em> (a JSON file), so bookings are shared across reloads and devices.</p>
+        </div>
+      </div>
+
+      <div class="card tint" style="margin-top:6px">
+        <h4>Putting it together</h4>
+        <p style="font-size:9.5pt">A <strong>React</strong> component shows the UI and keeps <strong>state</strong>. When it needs data it uses <strong>fetch</strong> to call an <strong>API</strong> route handler running on <strong>Node.js</strong> inside <strong>Next.js</strong>. The handler reads or writes data and replies with <strong>JSON</strong>. Shared booking data lives in <strong>React Context</strong>, and <strong>Material UI</strong> makes it all look polished.</p>
+      </div>
+
+      <div class="footer"><span>BusGo · Bus Booking Demo</span><span>Page 6 of 6</span></div>
+    </section>
+
+  </body>
+</html>
