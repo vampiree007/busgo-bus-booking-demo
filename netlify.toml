@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Netlify's Next.js runtime handles SSR, API routes, and static assets.
+# It is auto-installed when a Next.js site is detected; declared here for clarity.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

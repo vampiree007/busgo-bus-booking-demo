@@ -122,7 +122,7 @@ export default function BookingPage() {
 
       <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', md: '1fr 340px' } }}>
         {/* Step content */}
-        <Box>
+        <Box sx={{ minWidth: 0 }}>
           {step === 0 && (
             <Paper variant="outlined" sx={{ p: { xs: 2, md: 3 } }}>
               <Stack
@@ -172,7 +172,7 @@ export default function BookingPage() {
         </Box>
 
         {/* Fare summary (sticky on desktop) */}
-        <Box>
+        <Box sx={{ minWidth: 0 }}>
           <Paper
             variant="outlined"
             sx={{ p: 2.5, position: { md: 'sticky' }, top: { md: 80 }, bgcolor: '#F5F4FF', borderColor: '#E2DEFB' }}
